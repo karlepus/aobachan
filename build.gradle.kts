@@ -16,6 +16,10 @@ version = "1.0.0"
 
 java.toolchain.languageVersion.set(JavaLanguageVersion.of(17))
 
+kotlin.sourceSets.all {
+    languageSettings.optIn("kotlin.RequiresOptIn")
+}
+
 mirai {
     coreVersion = "2.10.0"
 }
@@ -23,6 +27,10 @@ mirai {
 repositories {
     maven("https://maven.aliyun.com/repository/public")
     mavenCentral()
+}
+
+dependencies {
+    implementation("com.google.auto.service:auto-service:1.0.1")
 }
 
 tasks {

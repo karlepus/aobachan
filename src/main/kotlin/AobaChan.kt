@@ -5,6 +5,7 @@ package cn.novacoo.mirai
 
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescription
 import net.mamoe.mirai.console.plugin.jvm.KotlinPlugin
+import net.mamoe.mirai.console.util.ConsoleExperimentalApi
 
 object AobaChan : KotlinPlugin(
     JvmPluginDescription(
@@ -22,6 +23,7 @@ object AobaChan : KotlinPlugin(
     override fun onDisable() {
     }
 
+    @OptIn(ConsoleExperimentalApi::class)
     override val autoSaveIntervalMillis: LongRange
         get() = LongRange(200, 400)
 }
