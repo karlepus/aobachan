@@ -1,9 +1,5 @@
 @file:Suppress("SpellCheckingInspection")
 
-plugins {
-    java
-}
-
 java {
     toolchain.languageVersion.set(JavaLanguageVersion.of(17))
     sourceCompatibility = JavaVersion.VERSION_17
@@ -11,5 +7,5 @@ java {
 }
 
 dependencies {
-    implementation(project(":api"))
+    implementation("org.reflections:reflections:0.10.2")
 }

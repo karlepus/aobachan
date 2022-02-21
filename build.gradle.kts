@@ -4,11 +4,11 @@ plugins {
     java
 }
 
-group = "cn.novacoo.mirai"
+group = "karlepus.mirai"
 version = "1.0.0"
 
 subprojects {
-    apply(plugin = "org.gradle.java")
+    apply(plugin = "java")
 
     repositories {
         maven("https://maven.aliyun.com/repository/public")

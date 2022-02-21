@@ -1,4 +1,4 @@
-import annotation.AutoRegister;
+import karlepus.annotation.AutoRegister;
 
 @AutoRegister
 public class APTTest {
