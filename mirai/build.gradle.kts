@@ -14,3 +14,6 @@ mirai {
 kotlin.sourceSets.all {
     languageSettings.optIn("kotlin.RequiresOptIn")
 }
+
+dependencies {
+}

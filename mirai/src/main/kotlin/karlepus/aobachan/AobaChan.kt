@@ -1,7 +1,7 @@
 @file:JvmName("AobaChan")
 @file:Suppress("unused")
 
-package karlepus
+package karlepus.aobachan
 
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescription
 import net.mamoe.mirai.console.plugin.jvm.KotlinPlugin

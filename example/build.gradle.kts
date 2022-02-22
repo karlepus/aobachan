@@ -8,5 +8,4 @@ java {
 
 dependencies {
     implementation(project(":api"))
-    annotationProcessor(project(":processor"))
 }
