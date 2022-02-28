@@ -11,8 +11,16 @@ mirai {
     coreVersion = "2.10.0"
 }
 
-kotlin.sourceSets.all {
-    languageSettings.optIn("kotlin.RequiresOptIn")
+kotlin {
+    explicitApi()
+
+    sourceSets.all {
+        languageSettings {
+            optIn("kotlin.RequiresOptIn")
+            optIn("kotlin.OptIn")
+            progressiveMode = true
+        }
+    }
 }
 
 dependencies {
