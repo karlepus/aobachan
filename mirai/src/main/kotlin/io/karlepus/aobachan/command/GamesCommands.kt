@@ -6,11 +6,8 @@ import io.karlepus.aobachan.AobaChan
 import io.karlepus.aobachan.command.internal.AobaChanCommandInternals
 import kotlinx.coroutines.cancel
 import net.mamoe.mirai.console.MiraiConsole
-import net.mamoe.mirai.console.command.Command
+import net.mamoe.mirai.console.command.*
 import net.mamoe.mirai.console.command.CommandManager.INSTANCE.register
-import net.mamoe.mirai.console.command.CommandSenderOnMessage
-import net.mamoe.mirai.console.command.MemberCommandSenderOnMessage
-import net.mamoe.mirai.console.command.SimpleCommand
 import net.mamoe.mirai.console.permission.Permission
 import net.mamoe.mirai.console.permission.PermissionService
 import kotlin.concurrent.thread
@@ -61,7 +58,7 @@ internal object GamesCommands {
         suspend fun CommandSenderOnMessage<*>.handle() {
             when (this) {
                 is MemberCommandSenderOnMessage -> {
-                    group
+                    fromEvent.sender.sendMessage("as")
                 }
             }
         }
