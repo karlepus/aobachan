@@ -1,13 +1,13 @@
 @file:JvmName("AobaChan")
 @file:Suppress("unused")
 
-package karlepus.aobachan
+package io.karlepus.aobachan
 
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescription
 import net.mamoe.mirai.console.plugin.jvm.KotlinPlugin
 import net.mamoe.mirai.console.util.ConsoleExperimentalApi
 
-object AobaChan : KotlinPlugin(
+public object AobaChan : KotlinPlugin(
     JvmPluginDescription(
         "karlepus.aobachan",
         "1.0.0",
