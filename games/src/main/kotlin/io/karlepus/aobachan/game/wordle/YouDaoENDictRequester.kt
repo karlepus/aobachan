@@ -2,7 +2,6 @@
 
 package io.karlepus.aobachan.game.wordle
 
-import io.karlepus.aobachan.game.wordle.data.YouDaoENDictResponder
 import io.karlepus.aobachan.http.http
 import io.ktor.client.request.*
 import kotlinx.serialization.decodeFromString
@@ -15,7 +14,7 @@ import java.time.format.DateTimeFormatter
  *
  * @author KarLepus
  */
-internal object YouDaoENDictRequester {
+public object YouDaoENDictRequester {
     @Suppress("SpellCheckingInspection")
     private const val rs = "abcdefghijklmnopqrstuvwxyz"
 
@@ -53,10 +52,10 @@ internal object YouDaoENDictRequester {
     /**
      * 最终确认的来自 `有道词典` 的满足单词长度为 `5` 或 `7` 个字母的所有单词。
      */
-    suspend fun dict100s(): List<String> = random3Character().dict100s()
+    public suspend fun dict100s(): List<String> = random3Character().dict100s()
 
     /**
      * 得到日期时间（0000-00-00）。
      */
-    fun datetime(): String = ZonedDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+    public fun datetime(): String = ZonedDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
 }

@@ -4,10 +4,12 @@
 package io.karlepus.aobachan
 
 import io.karlepus.aobachan.command.GamesCommands
-import io.karlepus.aobachan.setting.config.AobaChanAllConfigHandlers
+import io.karlepus.aobachan.setting.config.AobaChanAllConfigHandler
+import io.karlepus.aobachan.setting.data.AobaChanAllDataHandler
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescription
 import net.mamoe.mirai.console.plugin.jvm.KotlinPlugin
 import net.mamoe.mirai.console.util.ConsoleExperimentalApi
+import java.awt.Font
 
 public object AobaChan : KotlinPlugin(
     JvmPluginDescription(
@@ -21,7 +23,8 @@ public object AobaChan : KotlinPlugin(
 ) {
     override fun onEnable() {
         // 重载配置
-        AobaChanAllConfigHandlers.reloadAll()
+        AobaChanAllConfigHandler.reloadAll()
+        AobaChanAllDataHandler.reloadAll()
         // 注册命令
         GamesCommands.registerAll()
     }
@@ -32,4 +35,12 @@ public object AobaChan : KotlinPlugin(
     @OptIn(ConsoleExperimentalApi::class)
     override val autoSaveIntervalMillis: LongRange
         get() = LongRange(200, 400)
+
+    /**
+     * 樱花体。
+     */
+    internal val sakura: Font = Font.createFont(
+        Font.TRUETYPE_FONT,
+        Thread.currentThread().contextClassLoader.getResourceAsStream("sakura.ttf")
+    )
 }

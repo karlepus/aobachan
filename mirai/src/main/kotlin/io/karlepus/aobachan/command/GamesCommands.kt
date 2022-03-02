@@ -51,14 +51,16 @@ internal object GamesCommands {
     object WordleCommand : SimpleCommand(
         AobaChan,
         "wordle",
-        description = "青叶酱 Wordle 文字游戏",
+        description = "青叶酱 Wordle 填词游戏",
         parentPermission = parentPermission
     ), AobaChanCommandInternals {
         @Handler
         suspend fun CommandSenderOnMessage<*>.handle() {
             when (this) {
-                is MemberCommandSenderOnMessage -> {
-                    fromEvent.sender.sendMessage("as")
+                is MemberCommandSenderOnMessage,
+                is OtherClientCommandSenderOnMessage -> return
+                else -> {
+                    sendMessage("准备好哦~开始今天的挑战吧~\uD83D\uDFE9")
                 }
             }
         }
