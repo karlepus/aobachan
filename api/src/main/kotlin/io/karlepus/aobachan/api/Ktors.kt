@@ -33,12 +33,8 @@ public val http: HttpClient = HttpClient(OkHttp) {
             retryOnConnectionFailure(true)
             sslSocketFactory(EasySSL.socketFactory, EasyX509TrustManager(null))
             hostnameVerifier { _, _ -> true }
-            cache(
-                Cache(
-                    File("aobachan${File.separator}caches${File.separator}http${File.separator}ktor.tmp"),
-                    (10 * 1024 * 1024).toLong()
-                )
-            )
+            val sep: String = File.separator
+            cache(Cache(File("aobachan${sep}caches${sep}http${sep}ktor.tmp"), (10 * 1024 * 1024).toLong()))
             connectionPool(ConnectionPool(5, 6, TimeUnit.MINUTES))
             followRedirects(true)
             followSslRedirects(false)

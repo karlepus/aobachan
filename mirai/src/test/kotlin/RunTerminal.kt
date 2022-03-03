@@ -1,8 +1,6 @@
 @file:Suppress("SpellCheckingInspection")
 @file:JvmName("MiraiConsoleTerminal")
 
-package cn.novacoo.mirai
-
 import io.karlepus.aobachan.AobaChan
 import net.mamoe.mirai.console.MiraiConsole
 import net.mamoe.mirai.console.plugin.PluginManager.INSTANCE.enable
