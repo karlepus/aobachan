@@ -2,7 +2,7 @@
 
 package io.karlepus.aobachan.game.wordle
 
-import io.karlepus.aobachan.http.http
+import io.karlepus.aobachan.api.http
 import io.ktor.client.request.*
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
