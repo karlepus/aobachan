@@ -1,3 +1,3 @@
 rootProject.name = "aobachan"
 
-include("mirai", "api", "games", "minecraft")
+include("mirai", "api", "games", "minecraft", "tools")
