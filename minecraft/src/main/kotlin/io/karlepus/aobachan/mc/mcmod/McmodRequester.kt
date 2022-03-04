@@ -58,6 +58,7 @@ internal class McmodRequester(
 
 
     init {
+        // test url = https://search.mcmod.cn/s?key=jei&filter=1&mold=1&page=1
         suspend { html = http.get(url) } // 初始化得到 html 的内容
         val titles: MutableList<String> = mutableListOf()
         val results: MutableList<String> = mutableListOf()
