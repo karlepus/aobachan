@@ -2,10 +2,6 @@
 
 package io.karlepus.aobachan.mc.mcmod
 
-import io.karlepus.aobachan.api.http
-import io.ktor.client.request.*
-import org.jsoup.Jsoup
-
 /**
  * [MC百科|最大的Minecraft中文MOD百科](https://www.mcmod.cn/) 请求器。
  *
@@ -37,85 +33,21 @@ internal class McmodRequester(
         get() = String.format("https://search.mcmod.cn/s?key=%s&filter=%d&mold=1&page=%d", key, filter, page)
 
     /**
-     * 爬取的 `HTML` 内容。
+     * 由 `重生` 提供的已知 `API` 接口，通过 [String.format] 动态赋值得到最终链接。
      */
-    private lateinit var html: String
+    private val api: String
+        get() = String.format("https://api.mcmod.cn/search/?%s", key)
 
-    /**
-     * 总结果数。
-     */
-    private var totals: Int
+    // 1. https://search.mcmod.cn/s?key=<关键词>&filter=<搜索过滤>&mold=<简单/复杂搜索>&page=[页数]
+    //    e.g. https://search.mcmod.cn/s?key=jei&filter=1&mold=1&page=1
+    //         关键词=jei 过滤器=模组 搜索模式=复杂 页数=1
+    //         返回所有搜索结果的完整 HTML 页面代码
+    //
+    // 2. https://api.mcmod.cn/search/?key=<关键词>&qq=[消息发送人QQ]&qqg=[发送人所在群号]
+    //    e.g. https://api.mcmod.cn/search/?key=jei&qq=1598651543&qqg=641188270
+    //         关键词=jei 消息发送人=1598651543 发送人所在的群=641188270
+    //         返回一个 @1598651543 的消息一样的字符串，包含搜索结果的标题和原链接
+    //    n.b. 使用过程中将会无视 qq 和 qqg 参数
 
-    /**
-     * 总页数。
-     */
-    private var pages: Int
-
-    /**
-     * 查询结果。
-     */
-    private var mcmodResult: McmodSearchResult
-
-
-    init {
-        // test url = https://search.mcmod.cn/s?key=jei&filter=1&mold=1&page=1
-        suspend { html = http.get(url) } // 初始化得到 html 的内容
-        val titles: MutableList<String> = mutableListOf()
-        val results: MutableList<String> = mutableListOf()
-        val links: MutableList<String> = mutableListOf()
-        val docs = Jsoup.parseBodyFragment(html)
-        docs.getElementsByClass("result-item").forEach { res ->
-            val head: String = res.getElementsByClass("head")[0].text() // 标题
-            titles.add(head)
-            val body: String = res.getElementsByClass("body")[0].text() // 简介主体 对该资源的简介内容
-            results.add(body)
-            val foot: String = res.getElementsByClass("foot")[0].text() // 脚部文字 来源、日期等信息
-            val address: String? = Regex("""(?<=地址：)[\w./-]+(?! 快照时间：)""").find(foot)?.value
-            val link = "https://$address" // 资源跳转链接
-            links.add(link)
-        }
-        // 查询到的 结果总数 和 页面总数 信息
-        val pageInfo: String = docs.getElementsMatchingOwnText("""找到约 \d+ 条结果，共约 \d+ 页。""")[0].text()
-        val numbers: MutableList<String> = mutableListOf()
-        Regex("""\d+""").findAll(pageInfo).forEach { numbers.add(it.value) }
-        totals = numbers[0].toInt()
-        pages = numbers[1].toInt()
-        mcmodResult = McmodSearchResult(titles, results, links, totals, pages) // 给 mcmod 赋值
-    }
-
-    suspend fun turnPage(page: Int): McmodSearchResult {
-        if (page < pages) {
-            this.page = page
-            html = http.get(url)
-            turnPageRequest()
-        }
-        return mcmodResult
-    }
-
-    /**
-     * 翻页的实现。
-     */
-    private fun turnPageRequest() {
-        val titles: MutableList<String> = mutableListOf()
-        val results: MutableList<String> = mutableListOf()
-        val links: MutableList<String> = mutableListOf()
-        val docs = Jsoup.parseBodyFragment(html)
-        docs.getElementsByClass("result-item").forEach { res ->
-            val head: String = res.getElementsByClass("head")[0].text() // 标题
-            titles.add(head)
-            val body: String = res.getElementsByClass("body")[0].text() // 简介主体 对该资源的简介内容
-            results.add(body)
-            val foot: String = res.getElementsByClass("foot")[0].text() // 脚部文字 来源、日期等信息
-            val address: String? = Regex("""(?<=地址：)[\w./-]+(?! 快照时间：)""").find(foot)?.value
-            val link = "https://$address" // 资源跳转链接
-            links.add(link)
-        }
-        // 查询到的 结果总数 和 页面总数 信息
-        val pageInfo: String = docs.getElementsMatchingOwnText("""找到约 \d+ 条结果，共约 \d+ 页。""")[0].text()
-        val numbers: MutableList<String> = mutableListOf()
-        Regex("""\d+""").findAll(pageInfo).forEach { numbers.add(it.value) }
-        totals = numbers[0].toInt()
-        pages = numbers[1].toInt()
-        mcmodResult = McmodSearchResult(titles, results, links, totals, pages) // 给 mcmod 赋值
-    }
+    fun violence() {}
 }
