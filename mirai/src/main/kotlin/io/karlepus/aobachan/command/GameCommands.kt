@@ -8,6 +8,7 @@ import kotlinx.coroutines.cancel
 import net.mamoe.mirai.console.MiraiConsole
 import net.mamoe.mirai.console.command.*
 import net.mamoe.mirai.console.command.CommandManager.INSTANCE.register
+import net.mamoe.mirai.console.command.CommandManager.INSTANCE.unregister
 import net.mamoe.mirai.console.permission.Permission
 import net.mamoe.mirai.console.permission.PermissionService
 import kotlin.concurrent.thread
@@ -46,6 +47,13 @@ internal object GameCommands {
      */
     internal fun registerAll() {
         GameCommands::class.nestedClasses.forEach { (it.objectInstance as? Command)?.register() }
+    }
+
+    /**
+     * 注销所有命令。
+     */
+    internal fun unregisterAll() {
+        GameCommands::class.nestedClasses.forEach { (it.objectInstance as? Command)?.unregister() }
     }
 
     object WordleCommand : SimpleCommand(

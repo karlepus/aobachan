@@ -28,13 +28,16 @@ public object AobaChan : KotlinPlugin(
         // 重载配置和数据
         AobaChanAllConfigHandler.reloadAll()
         AobaChanAllDataHandler.reloadAll()
-        // 注册命令
+        // 注册所有命令
         GameCommands.registerAll()
         MinecraftCommands.registerAll()
     }
 
     override fun onDisable() {
         http.closeQuietly()
+        // 注销所有命令
+        GameCommands.unregisterAll()
+        MinecraftCommands.unregisterAll()
     }
 
     @OptIn(ConsoleExperimentalApi::class)

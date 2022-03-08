@@ -4,13 +4,14 @@ package io.karlepus.aobachan.command
 
 import io.karlepus.aobachan.AobaChan
 import io.karlepus.aobachan.command.internal.AobaChanCommandInternals
-import io.karlepus.aobachan.mc.mcmod.McmodFilter
+import io.karlepus.aobachan.command.internal.mc.McmodFilter
 import io.karlepus.aobachan.mc.mcmod.McmodRequester
 import io.karlepus.aobachan.mc.mcmod.McmodResponder
 import kotlinx.coroutines.cancel
 import net.mamoe.mirai.console.MiraiConsole
 import net.mamoe.mirai.console.command.Command
 import net.mamoe.mirai.console.command.CommandManager.INSTANCE.register
+import net.mamoe.mirai.console.command.CommandManager.INSTANCE.unregister
 import net.mamoe.mirai.console.command.CommandSenderOnMessage
 import net.mamoe.mirai.console.command.SimpleCommand
 import net.mamoe.mirai.console.permission.Permission
@@ -52,6 +53,13 @@ internal object MinecraftCommands {
      */
     internal fun registerAll() {
         MinecraftCommands::class.nestedClasses.forEach { (it.objectInstance as? Command)?.register() }
+    }
+
+    /**
+     * 注销所有命令。
+     */
+    internal fun unregisterAll() {
+        MinecraftCommands::class.nestedClasses.forEach { (it.objectInstance as? Command)?.unregister() }
     }
 
     object McmodCommand : SimpleCommand(
