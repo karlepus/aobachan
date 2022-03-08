@@ -10,4 +10,5 @@ mirai {
 
 dependencies {
     implementation(project(":games"))
+    implementation(project(":minecraft"))
 }

@@ -3,8 +3,9 @@
 
 package io.karlepus.aobachan
 
-import io.karlepus.aobachan.command.GamesCommands
+import io.karlepus.aobachan.command.GameCommands
 import io.karlepus.aobachan.api.http
+import io.karlepus.aobachan.command.MinecraftCommands
 import io.karlepus.aobachan.setting.config.AobaChanAllConfigHandler
 import io.karlepus.aobachan.setting.data.AobaChanAllDataHandler
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescription
@@ -28,7 +29,8 @@ public object AobaChan : KotlinPlugin(
         AobaChanAllConfigHandler.reloadAll()
         AobaChanAllDataHandler.reloadAll()
         // 注册命令
-        GamesCommands.registerAll()
+        GameCommands.registerAll()
+        MinecraftCommands.registerAll()
     }
 
     override fun onDisable() {
