@@ -1,6 +1,6 @@
 @file:JvmName("KTest")
 
-import io.karlepus.aobachan.api.http
+import karlepus.aobachan.api.http
 import io.ktor.client.request.*
 import org.jsoup.Jsoup
 
