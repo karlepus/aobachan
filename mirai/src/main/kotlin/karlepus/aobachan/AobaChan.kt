@@ -5,6 +5,7 @@ package karlepus.aobachan
 
 import karlepus.aobachan.api.http
 import karlepus.aobachan.command.MinecraftCommands
+import karlepus.aobachan.listener.AobaChanAllListenerHandler
 import karlepus.aobachan.setting.config.AobaChanAllConfigHandler
 import karlepus.aobachan.setting.data.AobaChanAllDataHandler
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescription
@@ -29,12 +30,16 @@ public object AobaChan : KotlinPlugin(
         AobaChanAllDataHandler.reloadAll()
         // 注册所有命令
         MinecraftCommands.registerAll()
+        // 注册所有事件监听器
+        AobaChanAllListenerHandler.registerAll()
     }
 
     override fun onDisable() {
         http.closeQuietly()
         // 注销所有命令
         MinecraftCommands.unregisterAll()
+        // 停止所有事件监听器
+        AobaChanAllListenerHandler.cancelAll()
     }
 
     @OptIn(ConsoleExperimentalApi::class)

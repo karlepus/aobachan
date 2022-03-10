@@ -5,6 +5,8 @@ import kotlin.math.max
 /**
  * 限制字符串的长度，超过部分将被替换为 `"..."` 拼接在要求的字符串长度后面。
  *
+ * @param lengthLimit 限制的长度。
+ * @param replacement 超过部分被替换的内容，默认 `"..."` 。
  * @return 调整长度之后的字符串内容。
  */
 public fun String.truncate(lengthLimit: Int, replacement: String = "..."): String = buildString {
