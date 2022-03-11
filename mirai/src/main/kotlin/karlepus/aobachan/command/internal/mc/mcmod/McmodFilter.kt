@@ -61,26 +61,32 @@ internal enum class McmodFilter(
     SERVER("server", "服务器");
 
     /**
-     * 用于自定义本枚举类型作为命令参数时的解析方式，以让作为命令参数时得到正确得解析。
+     * 用于自定义本枚举类型作为命令参数时的解析器，以让作为命令参数时得到正确得解析。
      */
     internal object Parser : CommandValueArgumentParser<McmodFilter>,
         InternalCommandValueArgumentParserExtensions<McmodFilter>() {
         override fun parse(raw: String, sender: CommandSender): McmodFilter {
             val key: McmodFilter? = values().find {
-                it.name.equals(raw, true)
-                        || it.identifier.equals(raw, true)
-                        || it.i18n.equals(raw, true)
+                it.name.equals(raw, false)
+                        || it.identifier.equals(raw, false)
+                        || it.i18n.contentEquals(raw)
             }
             return key ?: illegalArgument(buildString {
                 append("🍀====== 模组百科 ======🍀\n")
                 append("❌过滤器参数错误~\n\n")
                 append("🔥正确参数如下：\n")
-                values().forEach {
-                    append("💠")
-                    append(it.identifier).append("\t\t")
-                    append(it.i18n).append('\n')
-                }
+                values().forEach { append("💠").appendBlank(it.identifier, it.i18n) }
             }.trim())
+        }
+
+        /**
+         * 拼接适当长度的空格控制格式。
+         */
+        private fun StringBuilder.appendBlank(id: String, i8: String): StringBuilder = this.let {
+            val len: Int = 10 - id.length
+            var p = ""
+            for (i in 0..len) p += " "
+            append(id.lowercase()).append(p).append(i8).append('\n')
         }
     }
 }

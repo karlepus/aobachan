@@ -4,6 +4,7 @@ package karlepus.aobachan.listener
 
 import karlepus.aobachan.AobaChan
 import karlepus.aobachan.mc.teacon.ChaHouTanSubscriber
+import karlepus.aobachan.setting.data.TeaConData
 import kotlinx.coroutines.CancellationException
 import net.mamoe.mirai.event.EventHandler
 import net.mamoe.mirai.event.ExceptionInEventHandlerException
@@ -28,15 +29,6 @@ internal object AobaChanListener : SimpleListenerHost() {
     @EventHandler
     suspend fun GroupMessageEvent.handle() {
         val chaHouTanSubscriber = ChaHouTanSubscriber()
-        chaHouTanSubscriber.rss()
-        val data = chaHouTanSubscriber.latest()
-        subject.sendMessage(buildString {
-            append(data.title).append('\n')
-            append(data.description).append('\n')
-            append(data.link).append('\n')
-            append(data.publish).append('\n')
-            append(data.issues)
-        })
-        println(data.image)
+        subject.sendMessage(TeaConData.latest.toString())
     }
 }

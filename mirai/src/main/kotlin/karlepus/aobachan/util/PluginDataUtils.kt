@@ -1,0 +1,1 @@
+package karlepus.aobachan.util

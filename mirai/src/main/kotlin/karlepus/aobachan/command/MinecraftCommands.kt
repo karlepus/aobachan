@@ -1,24 +1,31 @@
-@file:Suppress("unused", "DuplicatedCode")
+@file:Suppress("unused", "DuplicatedCode", "SpellCheckingInspection")
 
 package karlepus.aobachan.command
 
+import io.ktor.client.request.*
 import karlepus.aobachan.AobaChan
+import karlepus.aobachan.api.http
 import karlepus.aobachan.command.internal.InternalAobaChanCommands
 import karlepus.aobachan.command.internal.mc.mcmod.McmodFilter
+import karlepus.aobachan.command.internal.mc.teacon.SubscribeSelector
 import karlepus.aobachan.mc.mcmod.McmodRequester
 import karlepus.aobachan.mc.mcmod.McmodResponder
+import karlepus.aobachan.setting.data.TeaConData
 import kotlinx.coroutines.cancel
 import net.mamoe.mirai.console.MiraiConsole
-import net.mamoe.mirai.console.command.Command
+import net.mamoe.mirai.console.command.*
 import net.mamoe.mirai.console.command.CommandManager.INSTANCE.register
 import net.mamoe.mirai.console.command.CommandManager.INSTANCE.unregister
-import net.mamoe.mirai.console.command.CommandSenderOnMessage
-import net.mamoe.mirai.console.command.SimpleCommand
 import net.mamoe.mirai.console.command.descriptor.buildCommandArgumentContext
 import net.mamoe.mirai.console.permission.Permission
 import net.mamoe.mirai.console.permission.PermissionService
 import net.mamoe.mirai.message.data.At
+import net.mamoe.mirai.message.data.Image
+import net.mamoe.mirai.message.data.PlainText
+import net.mamoe.mirai.message.data.buildMessageChain
 import net.mamoe.mirai.message.nextMessageOrNull
+import net.mamoe.mirai.utils.ExternalResource.Companion.uploadAsImage
+import java.io.InputStream
 import kotlin.concurrent.thread
 
 /**
@@ -26,7 +33,6 @@ import kotlin.concurrent.thread
  *
  * @author KarLepus
  */
-@Suppress("SpellCheckingInspection")
 internal object MinecraftCommands {
     /**
      * 父级权限。
@@ -73,7 +79,7 @@ internal object MinecraftCommands {
      *
      * @author KarLepus
      */
-    object McmodCommand : SimpleCommand(
+    internal object McmodCommand : SimpleCommand(
         AobaChan,
         "mcmod",
         description = "查询我的世界模组百科",
@@ -158,6 +164,61 @@ internal object MinecraftCommands {
                 val day: String = it.elementAt(2).value
                 append("             ${year}年${month}月${day}日\n")
             }
+        }
+    }
+
+    internal object TeaConCommand : CompositeCommand(
+        AobaChan,
+        "teacon",
+        description = "模组开发茶会相关命令",
+        parentPermission = parentPermission,
+        overrideContext = buildCommandArgumentContext {
+            SubscribeSelector::class with SubscribeSelector.Parser
+        }
+    ), InternalAobaChanCommands {
+        @SubCommand
+        @Description("开关群订阅茶后谈功能")
+        suspend fun MemberCommandSenderOnMessage.rss(selector: SubscribeSelector? = null) {
+            if (selector != null) {
+                TeaConData.subscribe[group.id] = when (selector) {
+                    SubscribeSelector.TRUE -> {
+                        sendMessage(buildString {
+                            append("🍀======== TeaCon ========🍀\n")
+                            append("💠群茶后谈订阅功能已开启~")
+                        })
+                        true
+                    }
+                    SubscribeSelector.FALSE -> {
+                        sendMessage(buildString {
+                            append("🍀======== TeaCon ========🍀\n")
+                            append("❌群茶后谈订阅功能已关闭~")
+                        })
+                        false
+                    }
+                }
+            } else sendMessage(buildString {
+                val data: Boolean = TeaConData.subscribe.getOrPut(group.id) { false }
+                append("🍀======== TeaCon ========🍀\n")
+                append("🔥群茶后谈订阅功能当前")
+                if (data) append("已开启~") else append("已关闭~")
+            })
+        }
+
+        @SubCommand
+        @Description("关于 TeaCon 模组开发茶会")
+        suspend fun MemberCommandSenderOnMessage.about() {
+            val avatarUrl = "https://p.qlogo.cn/gh/721765118/721765118/640"
+            val avatar: Image = http.get<InputStream>(avatarUrl).use { it.uploadAsImage(subject) }
+            sendMessage(buildMessageChain {
+                appendLine("🍀======== TeaCon ========🍀\n")
+                append(avatar).appendLine("\n")
+                append("    茶馆除了用来喝茶，还可以用来交流信息。")
+                append("我们来自五湖四海，但互联网让我们可以在网上云喝茶。欢迎来到 Mod 开发茶会——一个慢节奏的 Mod 开发竞赛。")
+                append("你可以在这里云喝茶以及云开发 Mod。当然你也可以选择真枪实弹来写 Mod。")
+                appendLine("在一个多月的时间内你和你的小伙伴们究竟能写出什么？！\n")
+                appendLine("💠官网：https://www.teacon.cn")
+                appendLine("💠简介来源：https://www.teacon.cn/2020/intro")
+            })
         }
     }
 }

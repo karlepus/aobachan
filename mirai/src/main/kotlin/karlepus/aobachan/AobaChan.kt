@@ -6,6 +6,7 @@ package karlepus.aobachan
 import karlepus.aobachan.api.http
 import karlepus.aobachan.command.MinecraftCommands
 import karlepus.aobachan.listener.AobaChanAllListenerHandler
+import karlepus.aobachan.scheduler.AobaChanSchedulers
 import karlepus.aobachan.setting.config.AobaChanAllConfigHandler
 import karlepus.aobachan.setting.data.AobaChanAllDataHandler
 import net.mamoe.mirai.console.plugin.jvm.JvmPluginDescription
@@ -32,6 +33,8 @@ public object AobaChan : KotlinPlugin(
         MinecraftCommands.registerAll()
         // 注册所有事件监听器
         AobaChanAllListenerHandler.registerAll()
+        // 启动所有任务
+        AobaChanSchedulers.startAll()
     }
 
     override fun onDisable() {
